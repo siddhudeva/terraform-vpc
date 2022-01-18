@@ -37,3 +37,8 @@ resource "aws_route_table_association" "Private" {
   subnet_id      = "${element(aws_subnet.Private_subnets.*.id, count.index)}"
   route_table_id = "${aws_route_table.Private-route.id}"
 }
+resource "aws_route" "route-public" {
+  route_table_id            = aws_route_table.public-route.id
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id                = aws_internet_gateway.gw.id
+}

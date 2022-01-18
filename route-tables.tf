@@ -16,11 +16,14 @@ resource "aws_route_table" "Private-route" {
   }
 }
 
-resource "aws_main_route_table_association" "a" {
-  vpc_id         = aws_vpc.main.id
+resource "aws_route_table_association" "Public-assign" {
+  count = length(aws_subnet.Public_subnets)
+  subnet_id      = aws_subnet.Public_subnets.*.id
   route_table_id = aws_route_table.public-route.id
 }
-resource "aws_main_route_table_association" "a" {
-  vpc_id         = aws_vpc.main.id
+
+resource "aws_route_table_association" "private-assign" {
+count = length(aws_subnet.Private_subnets)
+  subnet_id      = aws_subnet.Private_subnets.id
   route_table_id = aws_route_table.Private-route.id
 }

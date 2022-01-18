@@ -24,6 +24,6 @@ resource "aws_route_table_association" "Public-assign" {
 
 resource "aws_route_table_association" "private-assign" {
   count          = length(aws_subnet.Private_subnets)
-  subnet_id      = aws_subnet.Private_subnets.id
+  subnet_id      = aws_subnet.Private_subnets.*.id
   route_table_id = aws_route_table.Private-route.id
 }

@@ -48,13 +48,19 @@ resource "aws_route" "route-private" {
   gateway_id             = aws_nat_gateway.ngw.id
 }
 
-resource "aws_route" "public-peer-default" {
-  route_table_id            = aws_route_table.public-route.id
-  destination_cidr_block    = data.aws_vpc.default.cidr_block
+resource "aws_route" "peer-public" {
+  route_table_id         = aws_route_table.public-route.id
+  destination_cidr_block = data.aws_vpc.default.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.peer-vpcs.id
 }
-resource "aws_route" "route-peer-main" {
-  route_table_id            = aws_route_table.Private-route.id
-  destination_cidr_block    = data.aws_vpc.default.cidr_block
+
+resource "aws_route" "peer-private" {
+  route_table_id         = aws_route_table.Private-route.id
+  destination_cidr_block = data.aws_vpc.default.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer-vpcs.id
+}
+resource "aws_route" "peer-default" {
+  route_table_id         = data.aws_vpc.default.id
+  destination_cidr_block = var.VPC_CIDR
   vpc_peering_connection_id = aws_vpc_peering_connection.peer-vpcs.id
 }

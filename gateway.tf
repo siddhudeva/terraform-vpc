@@ -8,10 +8,10 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_eip" "nat-gw" {
-  vpc      = true
+  vpc = true
   tags = {
-    Name   = "${var.ENV}-nat-gw-ip"
-    ENV    = var.ENV
+    Name = "${var.ENV}-nat-gw-ip"
+    ENV  = var.ENV
   }
 }
 

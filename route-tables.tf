@@ -28,22 +28,33 @@ resource "aws_route_table" "Private-route" {
 #}
 
 resource "aws_route_table_association" "Public" {
-  count          = "${length(aws_subnet.Public_subnets)}"
-  subnet_id      = "${element(aws_subnet.Public_subnets.*.id, count.index)}"
-  route_table_id = "${aws_route_table.public-route.id}"
+  count          = length(aws_subnet.Public_subnets)
+  subnet_id      = element(aws_subnet.Public_subnets.*.id, count.index)
+  route_table_id = aws_route_table.public-route.id
 }
 resource "aws_route_table_association" "Private" {
-  count          = "${length(aws_subnet.Private_subnets)}"
-  subnet_id      = "${element(aws_subnet.Private_subnets.*.id, count.index)}"
-  route_table_id = "${aws_route_table.Private-route.id}"
+  count          = length(aws_subnet.Private_subnets)
+  subnet_id      = element(aws_subnet.Private_subnets.*.id, count.index)
+  route_table_id = aws_route_table.Private-route.id
 }
 resource "aws_route" "route-public" {
+  route_table_id         = aws_route_table.public-route.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.gw.id
+}
+resource "aws_route" "route-private" {
+  route_table_id         = aws_route_table.Private-route.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_nat_gateway.ngw.id
+}
+
+resource "aws_route" "public-peer" {
   route_table_id            = aws_route_table.public-route.id
-  destination_cidr_block    = "0.0.0.0/0"
-  gateway_id                = aws_internet_gateway.gw.id
+  destination_cidr_block    = data.aws_vpc.default.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer-vpcs.id
 }
 resource "aws_route" "route-private" {
   route_table_id            = aws_route_table.Private-route.id
-  destination_cidr_block    = "0.0.0.0/0"
-  gateway_id                = aws_nat_gateway.ngw.id
+  destination_cidr_block    = aws_vpc.main.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer-vpcs.id
 }

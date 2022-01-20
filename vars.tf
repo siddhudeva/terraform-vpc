@@ -3,3 +3,4 @@ variable "ENV" {}
 variable "PUBLIC_SUBNET_CIDR" {}
 variable "PRIVATE_SUBNET_CIDR" {}
 variable "AZS" {}
+variable "PRIVATE_HOSTEDZONE_ID" {}

@@ -1,1 +1,2 @@
 AZS = ["us-east-1a", "us-east-1b"]
+PRIVATE_HOSTEDZONE_ID = Z0094801QOS7DHKY0DMZ

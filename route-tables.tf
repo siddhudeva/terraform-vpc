@@ -29,12 +29,12 @@ resource "aws_route_table" "Private-route" {
 
 resource "aws_route_table_association" "Public" {
   count          = length(aws_subnet.Public_subnets)
-  subnet_id      = element(aws_subnet.Public_subnets.*.id, [count.index])
+  subnet_id      = aws_subnet.Public_subnets.*.id[count.index]
   route_table_id = aws_route_table.public-route.id
 }
 resource "aws_route_table_association" "Private" {
   count          = length(aws_subnet.Private_subnets)
-  subnet_id      = element(aws_subnet.Private_subnets.*.id, [count.index])
+  subnet_id      = aws_subnet.Private_subnets.*.id[count.index]
   route_table_id = aws_route_table.Private-route.id
 }
 resource "aws_route" "route-public" {

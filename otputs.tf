@@ -24,3 +24,6 @@ output "DEFAULT_VPC_CIDR" {
 output "DEFAULT_VPC_ID" {
   value = data.aws_vpc.default.id
 }
+output "PRIVATE_HOSTEDZONE_ID" {
+  value = var.PRIVATE_HOSTEDZONE_ID
+}

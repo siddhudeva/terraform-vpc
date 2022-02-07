@@ -41,7 +41,7 @@ resource "aws_route_table_association" "Private" {
   route_table_id = aws_route_table.Private-route.id
 }
 /// here we are connecting the public route table with internet gateway. because internet ony comes through igw only..here asking internet using (0.0.0.0/0)
-resource "aws_route" "route-public" {
+resource "aws_route" "route-public_ig" {
   route_table_id         = aws_route_table.public-route.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.gw.id
